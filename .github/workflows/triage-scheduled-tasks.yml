@@ -8,6 +8,11 @@ on:
     - cron: '0 3 * * *'   # Daily at 3 AM UTC — stale issues
     - cron: '0 14 1 * *'  # Monthly on the 1st at 2 PM UTC — pitch surfacing
 
+# Permissions are scoped to least privilege. See https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
+permissions: read-all
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   no-response:
     if: github.event_name == 'issue_comment' || github.event.schedule == '5 * * * *'
