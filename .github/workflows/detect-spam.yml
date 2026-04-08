@@ -3,18 +3,24 @@ on:
   issues:
     types: [opened]
 
+# Permissions are scoped to least privilege. See https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
 permissions:
   contents: none
   issues: write
   models: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   issue-spam:
     runs-on: ubuntu-latest
     environment: cli-automation
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+          with:
+            persist-credentials: false
       - name: Run spam detection
         env:
           GH_TOKEN: ${{ secrets.AUTOMATION_TOKEN }}
