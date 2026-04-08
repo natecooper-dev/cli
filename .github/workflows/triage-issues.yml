@@ -3,6 +3,11 @@ on:
   issues:
     types: [opened, reopened, labeled, unlabeled, closed]
 
+# Permissions are scoped to least privilege. See https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
+permissions: read-all
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   label-incoming:
     if: github.event.action == 'opened' || github.event.action == 'reopened' || github.event.action == 'unlabeled'
